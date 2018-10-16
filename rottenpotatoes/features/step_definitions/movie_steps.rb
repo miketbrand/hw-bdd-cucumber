@@ -10,18 +10,11 @@ Then /(.*) seed movies should exist/ do | n_seeds |
   Movie.count.should be n_seeds.to_i
 end
 
-# Make sure that one string (regexp) occurs before or after another one
-#   on the same page
-
 Then /I should see "(.*)" before "(.*)"/ do |e1, e2|
-  #  ensure that that e1 occurs before e2.
-  #  page.body is the entire content of the page as a string.
-  fail "Unimplemented"
+  regexp  =  /#{e1}.*#{e2}/m 
+  page.body.should =~  regexp
 end
 
-# Make it easier to express checking or unchecking several boxes at once
-#  "When I uncheck the following ratings: PG, G, R"
-#  "When I check the following ratings: G"
 When /I (un)?check the following ratings: (.*)/ do |uncheck, rating_list|
   rating_array = rating_list.split(", ")
   rating_array.each do |rating|
@@ -38,8 +31,6 @@ Then /I should see all the movies/ do
   movie_titles.each do |title|
     step %Q{I should see "#{title}"}
   end
-  # Make sure that all the movies in the app are visible in the table
-  #fail "Unimplemented"
 end
 
 Then /I should (not )?see the following movies: (.*)/ do |unseen, movies_list|
@@ -47,6 +38,4 @@ Then /I should (not )?see the following movies: (.*)/ do |unseen, movies_list|
   movies_array.each do |movie|
     step %Q{I should #{unseen }see "#{movie}"}
   end
-  # Make sure that all the movies in the app are visible in the table
-  #fail "Unimplemented"
 end
